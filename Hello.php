@@ -40,4 +40,38 @@ if (isset($request_uri[count($request_uri) - 1]) && is_numeric($request_uri[coun
 
 //A API identifica o que o cliente quer fazer método http e qual recurso específico ele quer se há um id na url.
 
+
+//ato 3 switch metodo http
+switch ($method) {
+
+    case 'GET': // pegar dados
+        if ($id) { // caso queira uma tarefa http especifica
+
+            $task->id = $id; // informa qual tarefa buscar
+            if ($task->readOne()) { // busca no bd
+                http_response_code(200); //sucesso  xd.
+                echo json_encode(["id" => $task->id, "title" => $task->title, ]); // envia a tarefa em json.
+            } else { //caso nao encontre a tarefa.
+                http_response_code(404); // mensagem de erro.
+                echo json_encode(["message" => "Tarefa não encontrada."]);
+            }
+        } else { // caso queira todas as tarefas
+    
+            $stmt = $task->read(); // busca as tarefas no bd
+            if ($stmt->rowCount() > 0) { // verifica se ha tarefas
+                $tasks_arr = ["records" => []]; // prepara a lista.
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { /* ...lógica para adicionar cada tarefa ao array... */ }
+                http_response_code(200); // sucesso xd
+                echo json_encode($tasks_arr); // envia a lista em json.
+            } else { // caso nao encontre nenhuma tarefa
+                http_response_code(404); // mensagem de erro.
+                echo json_encode(["message" => "Nenhuma tarefa encontrada."]);
+            }
+        }
+        break; // fim do roteiro get
+        
+    
+
+
+
 ?>
