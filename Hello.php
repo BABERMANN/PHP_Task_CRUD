@@ -1,5 +1,5 @@
 <?php
-//ato 1 preparo dos bastidores
+//ato 1 preparo 
 //api fala para o cliente sobre respostas e permissoes
 
 header("Access-Control-Allow-Origin: *");//permite que qualquer site acesse esta api
